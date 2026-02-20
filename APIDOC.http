@@ -1,0 +1,250 @@
+# api call for register user
+###
+POST http://127.0.0.1:8000/register/
+Content-Type: application/json
+
+{
+    "username":"user",
+    "email":"user@gmail.com",
+    "phone":"8976345267",
+    "password":"user123"
+}
+
+
+# api call for token
+###
+POST http://127.0.0.1:8000/token/
+Content-Type: application/json
+
+{
+    "username":"user",
+    "password":"user123"
+}
+
+
+# api call for list users
+###
+GET http://127.0.0.1:8000/users/
+Accept: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+
+# api call for retrieve user
+###
+GET http://127.0.0.1:8000/users/2/
+Accept: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+
+# api call for update user
+###
+PUT http://127.0.0.1:8000/users/2/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+{
+    "username":"user",
+    "email":"user@gmail.com",
+    "phone":"8976345267",
+    "password":"user123"
+}
+
+
+# api call for add programming language
+###
+POST http://127.0.0.1:8000/languages/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+{
+    "name":"Python"
+}
+
+
+# api call for list programing language
+###
+GET http://127.0.0.1:8000/languages/
+Accept: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+
+# api call for update programming language
+###
+PUT http://127.0.0.1:8000/languages/3/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+{
+    "name":"Python"
+}
+
+
+# api call for delete quiz
+###
+DELETE http://127.0.0.1:8000/languages/3/
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+
+# api call for create quiz
+###
+POST http://127.0.0.1:8000/quizzes/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+{
+    "title":"Python basics Quiz",
+    "description":"Python basic knowledge needed.",
+    "programming_language":1,
+    "level":"Beginner",
+    "duration_minutes" :30,
+    "is_published":true
+}
+
+
+# api call for list quiz
+###
+GET http://127.0.0.1:8000/quizzes/
+Accept: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+
+# api call for retrieve quiz
+###
+GET http://127.0.0.1:8000/quizzes/3/
+Accept: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+
+# api call for update quiz
+###
+PUT http://127.0.0.1:8000/quizzes/3/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+{
+    "title":"Python basics Quiz",
+    "description":"Python basic knowledge needed.",
+    "programming_language":1,
+    "level":"Beginner",
+    "duration_minutes" :30,
+    "is_published":true
+}
+
+
+# api call for delete quiz
+###
+DELETE http://127.0.0.1:8000/quizzes/3/
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+
+# api call for add question
+###
+POST http://127.0.0.1:8000/quizzes/1/questions/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+{
+    "text" : "Python created by?",
+    "question_type" : "single",
+    "points" : 1
+}
+
+
+# api call for update question
+###
+PUT http://127.0.0.1:8000/questions/1/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+{
+    "text" : "Python created by?",
+    "question_type" : "single",
+    "points" : 1
+}
+
+
+# api call for delete question
+###
+DELETE http://127.0.0.1:8000/questions/1/
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+
+# api call for add choice
+###
+POST http://127.0.0.1:8000/questions/1/choices/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+[
+    {
+        "option": "Guido van Rossum",
+        "is_correct": true
+    },
+    {
+        "option": "Elon Musk",
+        "is_correct": false
+    },
+    {
+        "option": "Bill Gates",
+        "is_correct": false
+    },
+    {
+        "option": "Mark Zuckerberg",
+        "is_correct": false
+    }
+]
+
+
+# api call for update choice
+###
+PUT http://127.0.0.1:8000/choices/1/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+{
+    "question":1, 
+    "option":"Guedo Van Russom", 
+    "is_correct":false
+}
+
+
+# api call for delete choice
+###
+DELETE http://127.0.0.1:8000/choices/1/
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+
+# api call for quiz attempt
+###
+POST http://127.0.0.1:8000/quizzes/1/attempts/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+{
+
+}
+
+
+# api call for response to quiz
+###
+POST http://127.0.0.1:8000/attempts/1/submit/
+Content-Type: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk
+
+[
+        {
+            "question": 1,
+            "selected_choices": [1]
+        },
+        {
+            "question": 2,
+            "selected_choices": [4, 5] 
+        }
+]
+
+
+# api call for get quiz attempt results
+###
+GET http://127.0.0.1:8000/attempts/1/
+Accept: application/json
+Authorization: Token 982ejghdcewkfgciwe86786ujk

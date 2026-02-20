@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from django.utils import timezone
+from django.db import transaction
 
 
 class User(AbstractUser):
@@ -29,15 +31,13 @@ class ProgrammingLanguage(CommonInfo):
 
 
 
-LEVEL_CHOICES = (
+class Quiz(CommonInfo):
+
+    LEVEL_CHOICES = (
     ("Expert", "Expert"),
     ("Intermediate", "Intermediate"),
     ("Beginner", "Beginner")
-)
-
-
-
-class Quiz(CommonInfo):
+    )
 
     title = models.CharField(max_length=255, unique=True)
 
@@ -46,6 +46,8 @@ class Quiz(CommonInfo):
     programming_language = models.ForeignKey(ProgrammingLanguage, on_delete=models.SET_NULL, null=True)
 
     level = models.CharField(max_length=50, choices=LEVEL_CHOICES, default='Beginner')
+
+    duration_minutes = models.PositiveIntegerField(default=30, help_text="Time limit in minutes")
 
     is_published = models.BooleanField(default=False)
 
@@ -61,9 +63,18 @@ class Quiz(CommonInfo):
 
 class Question(CommonInfo):
 
+    QUESTION_TYPES = (
+        ('single', 'Single Choice'),
+        ('multiple', 'Multiple Choice'),
+    )
+
     text = models.CharField(max_length=1000)
 
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
+
+    question_type = models.CharField(max_length=10, choices=QUESTION_TYPES, default='single')
+
+    points = models.PositiveIntegerField(default=1, help_text="Points awarded for a correct answer")
 
 
     def __str__(self):
@@ -73,9 +84,9 @@ class Question(CommonInfo):
 
 class Choice(CommonInfo):
 
-    option = models.CharField(max_length=255)
-
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
+
+    option = models.CharField(max_length=255)
 
     is_correct = models.BooleanField(default=False)
 
@@ -93,20 +104,59 @@ class QuizAttempt(CommonInfo):
 
     score = models.FloatField(default=0.0)
 
+    start_time = models.DateTimeField(auto_now_add=True)
+
+    end_time = models.DateTimeField(null=True, blank=True)
+
     is_completed = models.BooleanField(default=False)
 
 
-    # def calculate_score(self):
-    #     total_questions = self.quiz.questions.count()
-    #     if total_questions == 0:
-    #         return 0
+    @property
+    def is_expired(self):
+        """Checks if the user has run out of time based on Quiz.duration_minutes"""
+        if not self.start_time:
+            return False
+        expiry_time = self.start_time + timezone.timedelta(minutes=self.quiz.duration_minutes)
+        return timezone.now() > expiry_time
+
+
+    # @transaction.atomic
+    # def calculate_final_score(self):
+    #     total_possible_points = 0
+    #     earned_points = 0
         
-    #     # Count correct responses linked to this attempt
-    #     correct_answers = self.responses.filter(choice__is_correct=True).count()
+    #     # Get all questions in this quiz
+    #     quiz_questions = self.quiz.questions.all()
+    #     total_possible_points = sum(q.points for q in quiz_questions)
         
-    #     # Calculation: (Correct / Total) * 100
-    #     self.score = round((correct_answers / total_questions) * 100, 2)
+    #     # Get all responses for this attempt
+    #     responses = self.responses.prefetch_related('selected_choices')
+        
+    #     for resp in responses:
+    #         question = resp.question
+            
+    #         # Get IDs of correct choices for this question
+    #         correct_choice_ids = set(
+    #             question.choices.filter(is_correct=True).values_list('id', flat=True)
+    #         )
+            
+    #         # Get IDs of choices the user actually selected
+    #         selected_ids = set(
+    #             resp.selected_choices.values_list('id', flat=True)
+    #         )
+            
+    #         # Logic: Sets must match exactly
+    #         if selected_ids == correct_choice_ids and len(correct_choice_ids) > 0:
+    #             earned_points += question.points
+
+    #     # Calculate percentage
+    #     if total_possible_points > 0:
+    #         self.score = round((earned_points / total_possible_points) * 100, 2)
+    #     else:
+    #         self.score = 0
+            
     #     self.is_completed = True
+    #     self.end_time = timezone.now()
     #     self.save()
     #     return self.score
 
@@ -122,7 +172,8 @@ class QuizResponse(CommonInfo):
 
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
-    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    selected_choices = models.ManyToManyField(Choice)
+
 
     class Meta:
 
