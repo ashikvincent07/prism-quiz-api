@@ -4,9 +4,9 @@ POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
 {
-    "username":"user",
-    "email":"user@gmail.com",
-    "phone":"8976345267",
+    "username":"user2",
+    "email":"user2@gmail.com",
+    "phone":"8976147267",
     "password":"user123"
 }
 
@@ -17,35 +17,7 @@ POST http://127.0.0.1:8000/token/
 Content-Type: application/json
 
 {
-    "username":"user",
-    "password":"user123"
-}
-
-
-# api call for list users
-###
-GET http://127.0.0.1:8000/users/
-Accept: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
-
-
-# api call for retrieve user
-###
-GET http://127.0.0.1:8000/users/2/
-Accept: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
-
-
-# api call for update user
-###
-PUT http://127.0.0.1:8000/users/2/
-Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
-
-{
-    "username":"user",
-    "email":"user@gmail.com",
-    "phone":"8976345267",
+    "username":"user2@gmail.com",
     "password":"user123"
 }
 
@@ -54,10 +26,10 @@ Authorization: Token 982ejghdcewkfgciwe86786ujk
 ###
 POST http://127.0.0.1:8000/languages/
 Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 {
-    "name":"Python"
+    "name":"c++"
 }
 
 
@@ -65,34 +37,23 @@ Authorization: Token 982ejghdcewkfgciwe86786ujk
 ###
 GET http://127.0.0.1:8000/languages/
 Accept: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token b96f349600b8b9512e7fad06cd6559a9afbc69ba
 
 
-# api call for update programming language
-###
-PUT http://127.0.0.1:8000/languages/3/
-Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
-
-{
-    "name":"Python"
-}
-
-
-# api call for delete quiz
+# api call for delete programing language
 ###
 DELETE http://127.0.0.1:8000/languages/3/
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 
 # api call for create quiz
 ###
 POST http://127.0.0.1:8000/quizzes/
 Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 {
-    "title":"Python basics Quiz",
+    "title":"Python quiz",
     "description":"Python basic knowledge needed.",
     "programming_language":1,
     "level":"Beginner",
@@ -105,21 +66,22 @@ Authorization: Token 982ejghdcewkfgciwe86786ujk
 ###
 GET http://127.0.0.1:8000/quizzes/
 Accept: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
+
 
 
 # api call for retrieve quiz
 ###
-GET http://127.0.0.1:8000/quizzes/3/
+GET http://127.0.0.1:8000/quizzes/2/
 Accept: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 
 # api call for update quiz
 ###
-PUT http://127.0.0.1:8000/quizzes/3/
+PUT http://127.0.0.1:8000/quizzes/2/
 Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 {
     "title":"Python basics Quiz",
@@ -133,8 +95,19 @@ Authorization: Token 982ejghdcewkfgciwe86786ujk
 
 # api call for delete quiz
 ###
-DELETE http://127.0.0.1:8000/quizzes/3/
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+DELETE http://127.0.0.1:8000/quizzes/2/
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
+
+
+# api call for unpublishquiz
+###
+PATCH http://127.0.0.1:8000/quizzes/2/
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
+Content-Type: application/json
+
+{
+    "is_published":false
+}
 
 
 # api call for add question

@@ -7,6 +7,8 @@ from django.db import transaction
 
 class User(AbstractUser):
 
+    email = models.EmailField(unique=True)
+
     phone = models.CharField(max_length=15, unique=True)
 
 
@@ -24,6 +26,8 @@ class CommonInfo(models.Model):
 class ProgrammingLanguage(CommonInfo):
 
     name = models.CharField(max_length=255)
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='programming_languages')
 
 
     def __str__(self):
@@ -43,7 +47,7 @@ class Quiz(CommonInfo):
 
     description = models.TextField(null=True, blank=True)
 
-    programming_language = models.ForeignKey(ProgrammingLanguage, on_delete=models.SET_NULL, null=True)
+    programming_language = models.ForeignKey(ProgrammingLanguage, on_delete=models.DO_NOTHING)
 
     level = models.CharField(max_length=50, choices=LEVEL_CHOICES, default='Beginner')
 
@@ -53,7 +57,7 @@ class Quiz(CommonInfo):
 
     is_active = models.BooleanField(default=True)
 
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz')
 
 
     def __str__(self):
@@ -98,7 +102,7 @@ class Choice(CommonInfo):
 
 class QuizAttempt(CommonInfo):
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz_attempt')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz_attempt')
 
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='attempts')
 

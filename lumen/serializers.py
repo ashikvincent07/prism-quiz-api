@@ -19,10 +19,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProgrammingLanguageSerializer(serializers.ModelSerializer):
 
+    owner = serializers.StringRelatedField()
+
     class Meta:
 
         model = ProgrammingLanguage
         fields = "__all__"
+        read_only_fields = ['owner']
+
         
 
 
@@ -32,7 +36,11 @@ class QuizSerializer(serializers.ModelSerializer):
 
         model = Quiz
         fields = "__all__"
-        read_only_fields = ['programming_language', 'created_by']
+        read_only_fields = ['owner']
+    
+    programming_language = serializers.PrimaryKeyRelatedField(
+        queryset=ProgrammingLanguage.objects.all()
+    )
 
 
 
@@ -62,7 +70,7 @@ class QuizAttemptSerializer(serializers.ModelSerializer):
 
         model = QuizAttempt
         fields = "__all__"
-        read_only_fields = ['user','quiz']
+        read_only_fields = ['owner','quiz']
 
 
 

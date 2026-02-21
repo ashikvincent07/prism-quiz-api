@@ -17,6 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from lumen import views
+
+from rest_framework.authtoken.views import ObtainAuthToken
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('register/', views.UserRegisterView.as_view()),
+    path('token/', ObtainAuthToken.as_view()),
+    path('languages/', views.ProgrammingLanguageCreateListView.as_view()),
+    path('languages/<int:pk>/', views.ProgrammingLanguageDeleteView.as_view()),
+    path('quizzes/', views.QuizCreateListView.as_view()),
+    path('quizzes/<int:pk>/', views.QuizRetrievUpdateDeleteView.as_view()),
 ]
