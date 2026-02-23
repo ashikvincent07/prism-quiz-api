@@ -112,41 +112,58 @@ Content-Type: application/json
 
 # api call for add question
 ###
-POST http://127.0.0.1:8000/quizzes/1/questions/
+POST http://127.0.0.1:8000/quizzes/2/questions/
 Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 {
-    "text" : "Python created by?",
-    "question_type" : "single",
-    "points" : 1
+    "text" : "Python arithemetic operators?",
+    "question_type" : "multiple",
+    "points" : 2
 }
+
+
+# api call for list questions
+###
+GET http://127.0.0.1:8000/quizzes/2/questions/
+Accept: application/json
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
+
+
+
+# API for reatrive question
+###
+GET http://127.0.0.1:8000/questions/2/
+Accept: application/json
+Authorization: Token b96f349600b8b9512e7fad06cd6559a9afbc69ba
 
 
 # api call for update question
 ###
-PUT http://127.0.0.1:8000/questions/1/
+PUT http://127.0.0.1:8000/questions/2/
 Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 {
-    "text" : "Python created by?",
-    "question_type" : "single",
-    "points" : 1
+    "text" : "Python arithemetic operators?",
+    "question_type" : "multiple",
+    "points" : 2
 }
 
 
 # api call for delete question
 ###
 DELETE http://127.0.0.1:8000/questions/1/
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
+
+
 
 
 # api call for add choice
 ###
-POST http://127.0.0.1:8000/questions/1/choices/
+POST http://127.0.0.1:8000/questions/2/choices/
 Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 [
     {
@@ -168,23 +185,38 @@ Authorization: Token 982ejghdcewkfgciwe86786ujk
 ]
 
 
+# api call for list choices
+###
+GET http://127.0.0.1:8000/questions/2/choices/
+Accept: application/json
+Authorization: Token b96f349600b8b9512e7fad06cd6559a9afbc69ba
+
+
+# api call for retrieve choice
+###
+GET http://127.0.0.1:8000/choices/9/
+Accept: application/json
+Authorization: Token b96f349600b8b9512e7fad06cd6559a9afbc69ba
+
+
 # api call for update choice
 ###
 PUT http://127.0.0.1:8000/choices/1/
 Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
+
 
 {
     "question":1, 
     "option":"Guedo Van Russom", 
-    "is_correct":false
+    "is_correct":true
 }
 
 
 # api call for delete choice
 ###
-DELETE http://127.0.0.1:8000/choices/1/
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+DELETE http://127.0.0.1:8000/choices/13/
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 
 # api call for quiz attempt

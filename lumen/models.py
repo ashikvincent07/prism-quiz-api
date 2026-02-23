@@ -12,6 +12,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=15, unique=True)
 
 
+
 class CommonInfo(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -21,6 +22,7 @@ class CommonInfo(models.Model):
     class Meta:
 
         abstract = True
+
 
 
 class ProgrammingLanguage(CommonInfo):
@@ -72,7 +74,7 @@ class Question(CommonInfo):
         ('multiple', 'Multiple Choice'),
     )
 
-    text = models.CharField(max_length=1000)
+    text = models.CharField(max_length=1000, unique=True)
 
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
 

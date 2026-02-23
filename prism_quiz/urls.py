@@ -29,4 +29,8 @@ urlpatterns = [
     path('languages/<int:pk>/', views.ProgrammingLanguageDeleteView.as_view()),
     path('quizzes/', views.QuizCreateListView.as_view()),
     path('quizzes/<int:pk>/', views.QuizRetrievUpdateDeleteView.as_view()),
+    path('quizzes/<int:pk>/questions/', views.QuestionCreateListView.as_view()),
+    path('questions/<int:pk>/', views.QuestionRetrieveUpdateDeleteView.as_view()),
+    path('questions/<int:pk>/choices/', views.ChoiceCreateListView.as_view()),
+    path('choices/<int:pk>/', views.ChoiceRetrievUpdateDeleteView.as_view())
 ]

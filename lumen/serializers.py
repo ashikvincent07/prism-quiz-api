@@ -54,6 +54,36 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 
+class ChoiceListSerializer(serializers.ListSerializer):
+    
+    def validate(self, data):
+
+        question = self.context.get('question')
+        
+        correct_count = sum(1 for choice in data if choice.get('is_correct') is True)
+
+        if correct_count == 0:
+            raise serializers.ValidationError("At least one choice must be marked as correct.")
+
+        if question and question.question_type == 'single' and correct_count > 1:
+            raise serializers.ValidationError("Single-choice questions can only have one correct answer.")
+        
+        return data
+
+
+
+class ChoiceOwnerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Choice
+        fields = "__all__"
+        list_serializer_class = ChoiceListSerializer
+        read_only_fields = ['question']
+
+
+
+
 class ChoiceSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -61,6 +91,7 @@ class ChoiceSerializer(serializers.ModelSerializer):
         model = Choice
         fields = "__all__"
         read_only_fields = ['question']
+        extra_kwargs = {'is_correct':{'write_only':True}}
 
 
 
