@@ -32,5 +32,7 @@ urlpatterns = [
     path('quizzes/<int:pk>/questions/', views.QuestionCreateListView.as_view()),
     path('questions/<int:pk>/', views.QuestionRetrieveUpdateDeleteView.as_view()),
     path('questions/<int:pk>/choices/', views.ChoiceCreateListView.as_view()),
-    path('choices/<int:pk>/', views.ChoiceRetrievUpdateDeleteView.as_view())
+    path('choices/<int:pk>/', views.ChoiceRetrievUpdateDeleteView.as_view()),
+    path('quizzes/<int:pk>/attempts/', views.QuizAttemptCreateView.as_view()),
+    path('attempts/<int:pk>/submit/', views.QuizSubmissionView.as_view()),
 ]

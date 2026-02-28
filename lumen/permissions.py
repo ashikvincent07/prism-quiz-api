@@ -31,12 +31,11 @@ class CanModifyQuiz(permissions.BasePermission):
         if request.method == 'PATCH':
            
             data = request.data
-            is_switching_off = data.get('is_published') is False
             
            
             only_status_change = len(data.keys()) == 1 and 'is_published' in data
             
-            if is_switching_off and only_status_change:
+            if only_status_change:
                 return True
 
         return False

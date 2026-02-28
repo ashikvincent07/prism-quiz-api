@@ -119,52 +119,43 @@ class QuizAttempt(CommonInfo):
 
     @property
     def is_expired(self):
-        """Checks if the user has run out of time based on Quiz.duration_minutes"""
+        """Returns True if the current time has passed the allowed quiz duration."""
         if not self.start_time:
             return False
-        expiry_time = self.start_time + timezone.timedelta(minutes=self.quiz.duration_minutes)
-        return timezone.now() > expiry_time
+       
+        deadline = self.start_time + timezone.timedelta(minutes=self.quiz.duration_minutes)
+        
+        return timezone.now() > deadline
 
 
-    # @transaction.atomic
-    # def calculate_final_score(self):
-    #     total_possible_points = 0
-    #     earned_points = 0
-        
-    #     # Get all questions in this quiz
-    #     quiz_questions = self.quiz.questions.all()
-    #     total_possible_points = sum(q.points for q in quiz_questions)
-        
-    #     # Get all responses for this attempt
-    #     responses = self.responses.prefetch_related('selected_choices')
-        
-    #     for resp in responses:
-    #         question = resp.question
-            
-    #         # Get IDs of correct choices for this question
-    #         correct_choice_ids = set(
-    #             question.choices.filter(is_correct=True).values_list('id', flat=True)
-    #         )
-            
-    #         # Get IDs of choices the user actually selected
-    #         selected_ids = set(
-    #             resp.selected_choices.values_list('id', flat=True)
-    #         )
-            
-    #         # Logic: Sets must match exactly
-    #         if selected_ids == correct_choice_ids and len(correct_choice_ids) > 0:
-    #             earned_points += question.points
+    @transaction.atomic
+    def calculate_final_score(self):
+        """Calculates the percentage score and marks the attempt as finished."""
+        total_possible_points = 0
+        earned_points = 0
 
-    #     # Calculate percentage
-    #     if total_possible_points > 0:
-    #         self.score = round((earned_points / total_possible_points) * 100, 2)
-    #     else:
-    #         self.score = 0
-            
-    #     self.is_completed = True
-    #     self.end_time = timezone.now()
-    #     self.save()
-    #     return self.score
+        responses = self.responses.select_related('question').prefetch_related('selected_choices')
+
+        for resp in responses:
+            question = resp.question
+            total_possible_points += question.points
+     
+            correct_ids = set(question.choices.filter(is_correct=True).values_list('id', flat=True))
+            user_ids = set(resp.selected_choices.values_list('id', flat=True))
+
+            if user_ids == correct_ids and correct_ids:
+                earned_points += question.points
+
+        if total_possible_points > 0:
+            self.score = round((earned_points / total_possible_points) * 100, 2)
+        else:
+            self.score = 0.0
+
+        self.is_completed = True
+        self.end_time = timezone.now()
+        self.save()
+        
+        return self.score
 
     
     def __str__(self):

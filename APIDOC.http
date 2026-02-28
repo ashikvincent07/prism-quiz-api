@@ -89,19 +89,29 @@ Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
     "programming_language":1,
     "level":"Beginner",
     "duration_minutes" :30,
+}
+
+
+# # api call for delete quiz
+# ###
+# DELETE http://127.0.0.1:8000/quizzes/2/
+# Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
+
+
+# api call for publish quiz
+###
+PATCH http://127.0.0.1:8000/quizzes/1/
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
+Content-Type: application/json
+
+{
     "is_published":true
 }
 
 
-# api call for delete quiz
-###
-DELETE http://127.0.0.1:8000/quizzes/2/
-Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
-
-
 # api call for unpublishquiz
 ###
-PATCH http://127.0.0.1:8000/quizzes/2/
+PATCH http://127.0.0.1:8000/quizzes/1/
 Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 Content-Type: application/json
 
@@ -117,9 +127,9 @@ Content-Type: application/json
 Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 {
-    "text" : "Python arithemetic operators?",
-    "question_type" : "multiple",
-    "points" : 2
+    "text" : "Which loop in Python is used to iterate over a sequence like a list or string?",
+    "question_type" : "single",
+    "points" : 1
 }
 
 
@@ -140,12 +150,12 @@ Authorization: Token b96f349600b8b9512e7fad06cd6559a9afbc69ba
 
 # api call for update question
 ###
-PUT http://127.0.0.1:8000/questions/2/
+PUT http://127.0.0.1:8000/questions/3/
 Content-Type: application/json
 Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 {
-    "text" : "Python arithemetic operators?",
+    "text" : "Loops in python ?",
     "question_type" : "multiple",
     "points" : 2
 }
@@ -161,29 +171,28 @@ Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 # api call for add choice
 ###
-POST http://127.0.0.1:8000/questions/2/choices/
+POST http://127.0.0.1:8000/questions/6/choices/
 Content-Type: application/json
 Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 [
-    {
-        "option": "Guido van Rossum",
-        "is_correct": true
-    },
-    {
-        "option": "Elon Musk",
-        "is_correct": false
-    },
-    {
-        "option": "Bill Gates",
-        "is_correct": false
-    },
-    {
-        "option": "Mark Zuckerberg",
-        "is_correct": false
-    }
-]
-
+            {
+                "option": "for",
+                "is_correct": true
+            },
+            {
+                "option": "while",
+                "is_correct": false
+            },
+            {
+                "option": "do-while",
+                "is_correct": false
+            },
+            {
+                "option": "repeat",
+                "is_correct": false
+            }
+        ]
 
 # api call for list choices
 ###
@@ -201,49 +210,54 @@ Authorization: Token b96f349600b8b9512e7fad06cd6559a9afbc69ba
 
 # api call for update choice
 ###
-PUT http://127.0.0.1:8000/choices/1/
+PUT http://127.0.0.1:8000/choices/39/
 Content-Type: application/json
 Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
-
 {
-    "question":1, 
-    "option":"Guedo Van Russom", 
-    "is_correct":true
+    "option": "for",
+    "is_correct": true
 }
-
 
 # api call for delete choice
 ###
-DELETE http://127.0.0.1:8000/choices/13/
+DELETE http://127.0.0.1:8000/choices/30/
 Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 
 # api call for quiz attempt
 ###
-POST http://127.0.0.1:8000/quizzes/1/attempts/
+POST http://127.0.0.1:8000/quizzes/2/attempts/
 Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
-
-{
-
-}
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 
-# api call for response to quiz
+# api call for quiz response
 ###
-POST http://127.0.0.1:8000/attempts/1/submit/
+POST http://127.0.0.1:8000/attempts/2/submit/
 Content-Type: application/json
-Authorization: Token 982ejghdcewkfgciwe86786ujk
+Authorization: Token d6acfaeb6b35e92ff533602653846011884719f9
 
 [
         {
-            "question": 1,
-            "selected_choices": [1]
+            "question": 2,
+            "selected_choices": [17]
         },
         {
-            "question": 2,
-            "selected_choices": [4, 5] 
+            "question": 3,
+            "selected_choices": [21, 22, 23, 24] 
+        },
+        {
+            "question": 4,
+            "selected_choices": [29] 
+        },
+        {
+            "question": 5,
+            "selected_choices": [33, 34] 
+        },
+        {
+            "question": 6,
+            "selected_choices": [39] 
         }
 ]
 
